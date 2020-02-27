@@ -1,0 +1,31 @@
+{
+  "name": "typeandrun",
+  "version": "1.0.0",
+  "description": "Find out how fast you can type",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "Julius Dockwarder <julius@dockwarder.com> (https://github.com/dockwarder)",
+  "license": "ISC",
+  "dependencies": {
+    "next": "^9.2.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "styled-components": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.6",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/styled-components": "^5.0.1",
+    "babel-plugin-styled-components": "^1.10.7",
+    "typescript": "^3.8.2"
+  }
+}
