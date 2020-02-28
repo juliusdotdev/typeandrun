@@ -26,6 +26,8 @@
     "@types/react-dom": "^16.9.5",
     "@types/styled-components": "^5.0.1",
     "babel-plugin-styled-components": "^1.10.7",
+    "tslint": "^6.0.0",
+    "tslint-config-standard": "^9.0.0",
     "typescript": "^3.8.2"
   }
 }
