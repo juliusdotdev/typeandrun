@@ -6,7 +6,7 @@ import styled from 'styled-components'
 export default () => {
     return (
         <Header>
-            <Headline>TYPE AND RUN</Headline>
+            <Headline>// TYPE AND RUN</Headline>
         </Header>
     )
 }
