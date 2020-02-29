@@ -5,28 +5,59 @@ import {useDispatch, useSelector} from 'react-redux'
 // STYLES
 import styled from 'styled-components'
 import colors from '../../lib/colors'
+import initializeInputs from '../../store/actions/keyboard/initializeInputs'
 import handleUserInput from '../../store/actions/keyboard/handleUserInput'
 
 export default () => {
     const dispatch = useDispatch()
-    const userInputValue = useSelector(state => state.keyboard.userValue)
-    const previewInputValue = useSelector(state => state.keyboard.previewValue)
 
-    const handleUserInputChange = React.useCallback(e => {
-        dispatch(handleUserInput(e.target.value))
+    // INITIALIZE INPUTS ON MOUNT
+    React.useEffect(() => {
+        dispatch(initializeInputs('This is some pretty cool sample text.'))
     }, [dispatch])
 
+    // CREATE REF FOR USER INPUT ELEMENT
+    const userInputElement = React.useRef(null)
+
+    // GET VALUES FROM STORE
+    const wordsToType = useSelector(state => state.keyboard.wordsToType)
+    const wordsTyped = useSelector(state => state.keyboard.wordsTyped)
+    const currentInputValue = useSelector(state => state.keyboard.currentValue)
+    const textToType = useSelector(state => state.keyboard.wordsToType).join(' ')
+
+    // HANDLE USER INPUT
+    const handleUserInputChange = React.useCallback(e => {
+        dispatch(handleUserInput(e))
+    }, [dispatch])
+
+    // FOCUSES THE USER INPUT
+    const focusUserInputElement = React.useCallback(() => {
+        userInputElement.current.focus()
+    }, [userInputElement.current])
+
     return (
-        <InputWrapper>
-            <UserInput
-                type="text"
-                value={userInputValue}
-                onChange={handleUserInputChange}
-            />
-            <PreviewInput
-                type="text"
-                value={previewInputValue}
-            />
+        <InputWrapper onClick={focusUserInputElement}>
+            <WordDisplay position="left">
+                {wordsTyped.map((word, idx) => (
+                    <Word key={`${word}-${idx}`}>{word}</Word>
+                ))}
+            </WordDisplay>
+            <WordDisplay position="right">
+                {wordsToType.map((word, idx) => (
+                    <Word key={`${word}-${idx}`}>{word}</Word>
+                ))}
+            </WordDisplay>
+            {/*<UserInput*/}
+            {/*    type="text"*/}
+            {/*    ref={userInputElement}*/}
+            {/*    value={currentInputValue}*/}
+            {/*    onChange={handleUserInputChange}*/}
+            {/*/>*/}
+            {/*<PreviewInput*/}
+            {/*    readOnly*/}
+            {/*    type="text"*/}
+            {/*    value={textToType}*/}
+            {/*/>*/}
         </InputWrapper>
     )
 }
@@ -38,29 +69,22 @@ const InputWrapper = styled.section`
   margin-top: 64px;
 `
 
-const UserInput = styled.input`
+interface WordDisplayProps {
+    readonly position: string;
+}
+
+const WordDisplay = styled.section<WordDisplayProps>`
   position: absolute;
-  padding: 0;
   width: 50%;
   top: 0;
-  left: 0;
   bottom: 0;
+  left: ${({position}) => position === 'left' ? 0 : 'unset'};
+  right: ${({position}) => position === 'right' ? 0 : 'unset'};
   font-size: 1.6rem;
-  text-align: right;
-  outline: none;
-  appearance: none;
-  border: none;
-  border-radius: 0;
-  background: ${colors.grey2};
-  color: ${colors.accent};
-  
-  @media (min-width: 768px) {
-    font-size: 2rem;
-  }
+  text-align: ${({position}) => position === 'right' ? 'left' : 'right'};
 `
 
-const PreviewInput = styled(UserInput)`
-  right: 0;
-  left: unset;
-  text-align: left;
+const Word = styled.span`
+  display: inline-block;
+  padding: 0 6px;
 `

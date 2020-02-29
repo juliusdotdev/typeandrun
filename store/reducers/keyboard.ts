@@ -1,22 +1,41 @@
-// TYPES
-import {GenericAction} from '../types'
 // ACTION TYPES
-import * as actionTypes from '../actions/keyboard/actionTypes'
+import {
+    SET_CURRENT_VALUE,
+    SET_NEXT_WORD,
+    SET_TEXT_TO_TYPE,
+    SET_WORDS_TO_TYPE,
+    SET_WORDS_TYPED
+} from '../actions/keyboard/actionTypes'
 
 const initialState: object = {
-    previewValue: 'This is just some sample text',
-    userValue: ''
+    textToType: '',
+    wordsTyped: [],
+    wordsToType: [],
+    nextWord: '',
+    currentValue: '',
 }
 
 export const reducer = (state: object = initialState, action) => {
     switch (action.type) {
-        case actionTypes.SET_USER_INPUT_VALUE:
+        case SET_TEXT_TO_TYPE:
             return Object.assign({}, state, {
-                userValue: action.payload.value
+                textToType: action.payload.textToType
             })
-        case actionTypes.SET_PREVIEW_INPUT_VALUE:
+        case SET_WORDS_TO_TYPE:
             return Object.assign({}, state, {
-                previewValue: action.payload.value
+                wordsToType: action.payload.wordsToType
+            })
+        case SET_WORDS_TYPED:
+            return Object.assign({}, state, {
+                wordsTyped: action.payload.wordsTyped
+            })
+        case SET_NEXT_WORD:
+            return Object.assign({}, state, {
+                nextWord: action.payload.nextWord
+            })
+        case SET_CURRENT_VALUE:
+            return Object.assign({}, state, {
+                currentValue: action.payload.currentValue
             })
         default:
             return state
