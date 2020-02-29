@@ -25,7 +25,6 @@ export default ({children}) => {
 
 const PageContainer = styled.main`
   padding: 80px 0 0;
-  min-height: 100vh;
   background: ${colors.background};
   color: ${colors.accent};
 `
