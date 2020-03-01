@@ -1,90 +1,101 @@
 // REACT
-import React from 'react'
+import React, {useCallback, useRef, ChangeEvent, KeyboardEvent, useEffect} from 'react'
 // REDUX
 import {useDispatch, useSelector} from 'react-redux'
+// SELECTORS
+import {
+    getCompositeInputValue,
+    actions, getCompositeLeftWords
+} from '../../store/reducers/typing'
+// UTILS
+import isNil from 'lodash/isNil'
 // STYLES
-import styled from 'styled-components'
 import colors from '../../lib/colors'
-import initializeInputs from '../../store/actions/keyboard/initializeInputs'
-import handleUserInput from '../../store/actions/keyboard/handleUserInput'
+import styled from 'styled-components'
+
+const inputDefaults = {
+    type: 'text',
+    readOnly: false,
+    isRight: false
+}
+
+const {handleInputValueChange, saveWordAndResetInput, initializeApp} = actions
 
 export default () => {
+    const inputElement = useRef<HTMLInputElement>()
+    const inputElementReady = !isNil(inputElement.current)
     const dispatch = useDispatch()
 
-    // INITIALIZE INPUTS ON MOUNT
-    React.useEffect(() => {
-        dispatch(initializeInputs('This is some pretty cool sample text.'))
+    const uiInitializeApp = useCallback((text) => {
+        dispatch(initializeApp(text))
     }, [dispatch])
 
-    // CREATE REF FOR USER INPUT ELEMENT
-    const userInputElement = React.useRef(null)
-
-    // GET VALUES FROM STORE
-    const wordsToType = useSelector(state => state.keyboard.wordsToType)
-    const wordsTyped = useSelector(state => state.keyboard.wordsTyped)
-    const currentInputValue = useSelector(state => state.keyboard.currentValue)
-    const textToType = useSelector(state => state.keyboard.wordsToType).join(' ')
-
-    // HANDLE USER INPUT
-    const handleUserInputChange = React.useCallback(e => {
-        dispatch(handleUserInput(e))
+    const uiHandleInputValueChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        dispatch(handleInputValueChange(event.target.value))
     }, [dispatch])
 
-    // FOCUSES THE USER INPUT
-    const focusUserInputElement = React.useCallback(() => {
-        userInputElement.current.focus()
-    }, [userInputElement.current])
+    const uiSaveTypedWord = useCallback(() => {
+        dispatch(saveWordAndResetInput())
+    }, [dispatch])
+
+    const uiHandleInputWrapperClick = useCallback(() => {
+        if (inputElementReady) inputElement.current.focus()
+    }, [inputElement.current])
+
+    const uiHandleInputKeyPress = useCallback((event: KeyboardEvent) => {
+        if (event.charCode === 32) uiSaveTypedWord()
+    }, [inputElement.current])
+
+    useEffect(() => {
+        // @ts-ignore
+        window.init = uiInitializeApp
+    }, [uiInitializeApp])
+
+    const compositeInputValue = useSelector(getCompositeInputValue)
+    const compositeLeftWords = useSelector(getCompositeLeftWords)
 
     return (
-        <InputWrapper onClick={focusUserInputElement}>
-            <WordDisplay position="left">
-                {wordsTyped.map((word, idx) => (
-                    <Word key={`${word}-${idx}`}>{word}</Word>
-                ))}
-            </WordDisplay>
-            <WordDisplay position="right">
-                {wordsToType.map((word, idx) => (
-                    <Word key={`${word}-${idx}`}>{word}</Word>
-                ))}
-            </WordDisplay>
-            {/*<UserInput*/}
-            {/*    type="text"*/}
-            {/*    ref={userInputElement}*/}
-            {/*    value={currentInputValue}*/}
-            {/*    onChange={handleUserInputChange}*/}
-            {/*/>*/}
-            {/*<PreviewInput*/}
-            {/*    readOnly*/}
-            {/*    type="text"*/}
-            {/*    value={textToType}*/}
-            {/*/>*/}
+        <InputWrapper onClick={uiHandleInputWrapperClick}>
+            <TypingInput
+                {...inputDefaults}
+                ref={inputElement}
+                value={compositeInputValue}
+                onKeyPress={uiHandleInputKeyPress}
+                onChange={uiHandleInputValueChange}
+            />
+            <TypingInput
+                {...inputDefaults}
+                value={compositeLeftWords}
+                readOnly
+                isRight
+            />
         </InputWrapper>
     )
 }
 
-const InputWrapper = styled.section`
-  position: relative;
+const InputWrapper = styled.div`
   width: 100%;
-  height: 80px;
-  margin-top: 64px;
+  padding: 16px;
+  margin: 64px 0 0;
+  display: flex;
+  justify-content: space-evenly;
+  background: ${colors.grey3};
 `
 
-interface WordDisplayProps {
-    readonly position: string;
+interface TypingInputProps {
+    isRight: boolean;
+    readOnly: boolean;
 }
 
-const WordDisplay = styled.section<WordDisplayProps>`
-  position: absolute;
+const TypingInput = styled.input<TypingInputProps>`
   width: 50%;
-  top: 0;
-  bottom: 0;
-  left: ${({position}) => position === 'left' ? 0 : 'unset'};
-  right: ${({position}) => position === 'right' ? 0 : 'unset'};
-  font-size: 1.6rem;
-  text-align: ${({position}) => position === 'right' ? 'left' : 'right'};
-`
-
-const Word = styled.span`
-  display: inline-block;
-  padding: 0 6px;
+  border: none;
+  outline: none;
+  appearance: none;
+  font-size: 2.4rem;
+  background: inherit;
+  opacity: ${props => props.isRight ? 1 : 0.5};
+  color: ${colors.accent};
+  text-align: ${props => props.isRight ? 'left' : 'right'};
+  ${props => props.readOnly ? 'user-select: none' : ''};
 `

@@ -1,12 +1,19 @@
-import {createStore, applyMiddleware} from 'redux'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
-import reducer from './reducers'
+// REDUX
+import {configureStore} from '@reduxjs/toolkit'
+// ROOT REDUCER
+import rootReducer from './reducers'
 
-export const initializeStore = (preloadedState = {}) => {
-    return createStore(
-        reducer,
-        preloadedState,
-        composeWithDevTools(applyMiddleware(thunk))
-    )
-}
+// CONFIGURE REDUX STORE
+const initializeStore = (preloadedState: object) => configureStore({
+    reducer: rootReducer,
+    preloadedState: preloadedState,
+    devTools: {
+        name: 'TYPE AND RUN',
+        trace: true,
+        features: {
+            jump: false
+        }
+    }
+})
+
+export default initializeStore

@@ -1,9 +1,15 @@
 // REDUX
-import {combineReducers} from 'redux'
+import {combineReducers} from '@reduxjs/toolkit'
 // REDUCERS
-import * as keyboard from './keyboard'
+import {reducer as typing} from './typing'
 
 // ROOT REDUCER
-export default combineReducers({
-    [keyboard.key]: keyboard.reducer
+const rootReducer = combineReducers({
+    typing
 })
+
+// ROOT STATE TYPE
+export type RootState = ReturnType<typeof rootReducer>
+
+// ROOT REDUCER
+export default rootReducer

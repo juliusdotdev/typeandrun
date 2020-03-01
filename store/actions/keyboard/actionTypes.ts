@@ -1,5 +1,0 @@
-export const SET_TEXT_TO_TYPE = 'SET_TEXT_TO_TYPE'
-export const SET_WORDS_TYPED = 'SET_WORDS_TYPED'
-export const SET_WORDS_TO_TYPE = 'SET_WORDS_TO_TYPE'
-export const SET_NEXT_WORD = 'SET_NEXT_WORD'
-export const SET_CURRENT_VALUE = 'SET_CURRENT_VALUE'
