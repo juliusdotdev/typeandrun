@@ -18,11 +18,11 @@ const Header = styled.section`
 `
 
 const Headline = styled.h1`
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin: 0 0 24px;
   
   @media (min-width: 375px) {
-    font-size: 2.4rem;
+    font-size: 2rem;
   }
   
   @media (min-width: 768px) {
