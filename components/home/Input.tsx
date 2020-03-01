@@ -49,6 +49,7 @@ export default () => {
     useEffect(() => {
         // @ts-ignore
         window.init = uiInitializeApp
+        uiInitializeApp('Nunc pellentesque egestas commodo. Duis imperdiet, est non rutrum dictum, sapien est pretium magna, eu scelerisque urna lectus in leo. Sed dignissim metus metus, at tempus orci vehicula id. Nulla iaculis, elit quis vehicula bibendum, justo massa auctor massa, id.')
     }, [uiInitializeApp])
 
     const compositeInputValue = useSelector(getCompositeInputValue)
@@ -75,7 +76,7 @@ export default () => {
 
 const InputWrapper = styled.div`
   width: 100%;
-  padding: 16px;
+  padding: 16px 0;
   margin: 64px 0 0;
   display: flex;
   justify-content: space-evenly;
@@ -89,9 +90,11 @@ interface TypingInputProps {
 
 const TypingInput = styled.input<TypingInputProps>`
   width: 50%;
+  padding: 0;
   border: none;
   outline: none;
   appearance: none;
+  border-radius: 0;
   font-size: 2.4rem;
   background: inherit;
   opacity: ${props => props.isRight ? 1 : 0.5};

@@ -1,24 +1,31 @@
 // REACT
 import React from 'react'
+// REDUX
+import {useSelector} from 'react-redux'
+// SELECTORS
+import {getWordsPerMinute, getCharactersPerMinute} from '../../store/reducers/typing'
 // STYLES
 import styled from 'styled-components'
 import colors from '../../lib/colors'
 
 export default () => {
+    const wordsPerMinute = useSelector(getWordsPerMinute)
+    const charactersPerMinute = useSelector(getCharactersPerMinute)
+
     return (
         <StatsWrapper>
             <StatsItem>
-                <StatsItemValue>0</StatsItemValue>
+                <StatsItemValue>{wordsPerMinute}</StatsItemValue>
                 <StatsItemLabel>WPM</StatsItemLabel>
             </StatsItem>
             <StatsItem>
-                <StatsItemValue>0</StatsItemValue>
+                <StatsItemValue>{charactersPerMinute}</StatsItemValue>
                 <StatsItemLabel>CPM</StatsItemLabel>
             </StatsItem>
-            <StatsItem>
-                <StatsItemValue>0</StatsItemValue>
-                <StatsItemLabel>ACC</StatsItemLabel>
-            </StatsItem>
+            {/*<StatsItem>*/}
+            {/*    <StatsItemValue>SOON</StatsItemValue>*/}
+            {/*    <StatsItemLabel>ACC</StatsItemLabel>*/}
+            {/*</StatsItem>*/}
         </StatsWrapper>
     )
 }
