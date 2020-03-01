@@ -12,6 +12,7 @@
   "author": "Julius Dockwarder <julius@dockwarder.com> (https://github.com/dockwarder)",
   "license": "ISC",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.2.5",
     "next": "^9.2.2",
     "normalize.css": "^8.0.1",
     "react": "^16.13.0",
