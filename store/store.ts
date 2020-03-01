@@ -1,12 +1,8 @@
-import {createStore, applyMiddleware} from 'redux'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
-import reducer from './reducers'
+import { configureStore } from '@reduxjs/toolkit'
+import keyboardReducer from './reducers/keyboardSlice'
 
-export const initializeStore = (preloadedState = {}) => {
-    return createStore(
-        reducer,
-        preloadedState,
-        composeWithDevTools(applyMiddleware(thunk))
-    )
-}
+export default configureStore({
+    reducer: {
+        keyboard: keyboardReducer
+    }
+})

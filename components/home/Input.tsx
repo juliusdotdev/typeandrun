@@ -1,16 +1,16 @@
 // REACT
 import React from 'react'
 // REDUX
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectPreviewValue, selectUserValue, handleUserInput } from '../../store/reducers/keyboardSlice'
 // STYLES
 import styled from 'styled-components'
 import colors from '../../lib/colors'
-import handleUserInput from '../../store/actions/keyboard/handleUserInput'
 
 export default () => {
     const dispatch = useDispatch()
-    const userInputValue = useSelector(state => state.keyboard.userValue)
-    const previewInputValue = useSelector(state => state.keyboard.previewValue)
+    const userInputValue = useSelector(selectUserValue)
+    const previewInputValue = useSelector(selectPreviewValue)
 
     const handleUserInputChange = React.useCallback(e => {
         dispatch(handleUserInput(e.target.value))
